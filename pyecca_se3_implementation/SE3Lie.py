@@ -150,6 +150,10 @@ class SE3:
         return ca.mtimes(a, b)
 
     @classmethod
+    def identity(self):
+        return ca.SX.eye(4)
+
+    @classmethod
     def inv(cls, a): #input a matrix of SX form from casadi
         cls.check_group_shape(a)
         a_inv = ca.solve(a,ca.SX.eye(6)) #Google Group post mentioned ca.inv() could take too long, and should explore solve function
@@ -159,7 +163,7 @@ class SE3:
     def log(cls, G):
         theta = ca.arccos(((G[0, 0]+G[1, 1]+G[2, 2]) - 1) / 2) #review if this need to be changed for order of vee
         wSkew = so3.wedge(so3.Dcm.log(G[:3,:3]))
-        V_inv = ca.SX.eye(3) - 0.5*wSkew + (1/(theta**2))*(1-((cls.C1(theta))/(2*cls.C2(theta))))*ca.mtimes(wSkew, wSkew)
+        V_inv = ca.SX.eye(3) - 0.5*wSkew + (1/(theta**2))*(1-((cls.C1(theta))/(2*cls.C2(theta))))*ca.mtimes(wSkew, wSkew) #singularities if theta = 0
         
         # t is translational component vector
         t = ca.SX(3, 1)     
@@ -178,7 +182,6 @@ def se3_diff_correction(v): #U Matrix for se3 with input vee operator
 
 def se3_diff_correction_inv(v): #U_inv of se3 input vee operator
     # v = se3.vee(v)  #This only applies if v is inputed from Lie Group format
-
     v_so3 = v[3:6] #grab only rotation terms for so3 uses ## changed to match NASAULI paper order of vee v[3:6]
     X_so3 = so3.wedge(v_so3) #wedge operator for so3
     theta = ca.norm_2(so3.vee(X_so3)) #theta term using norm for sqrt(theta1**2+theta2**2+theta3**2)
@@ -254,29 +257,6 @@ def se3_diff_correction_inv(v): #U_inv of se3 input vee operator
 
     # u_inv = ca.transpose(ca.horzcat(uInvR1,uInvR2,uInvR3,uInvR4, uInvR5, uInvR6))
     # return u_inv
-    
-    
-    
-# verify this with series solution 
-
-# https://github.com/jgoppert/pyecca/blob/master/pyecca/estimators/attitude/algorithms/mrp.py
-# Use this to try to get casadi to draw a plot for this
-# line 112-116 help for drawing plots
-
-# https://github.com/jgoppert/pyecca/blob/master/pyecca/estimators/attitude/algorithms/common.py
-# This import to import needed casadi command
-
-
-#New notes (Oct 18 22)
-    ## sympy.cse(f) to find common self expression using sympy to clean up the casadi plot
-    # cse_def, cse_expr = sympy.cse(f)
-    
-
-#Oct 25 Update
-    # work on updating SE2 umatrix to casadi
-    # get SE2 U matrix
-    # u matrix can be found through casadi using inverse function for casadi
-
 
 def dot_plot_draw(u, **kwargs):
     F = ca.sparsify(u)
