@@ -203,7 +203,7 @@ def se3_diff_correction_inv(v): #U_inv of se3 input vee operator
     ad = se3.ad_matrix(v)
     I = ca.SX_eye(6)
     # u_inv = ca.SX(6, 6)
-    u_inv = I + c2 * ad + c3*se3.matmul(ad,ad)
+    u_inv = I + c2 * ad + c3*se3.matmul(ad,ad) #recheck if this needs negative
     return u_inv
 
     # u_inv = ca.SX(6, 6)
