@@ -194,7 +194,7 @@ def se2_diff_correction_inv(v): #U_inv of se2 input vee operator
 
     ad = se2.ad_matrix(v)
     I = ca.SX_eye(3)
-    u_inv = I + c1 * ad + c2 *se2.matmul(ad,ad)
+    u_inv = (I + c1 * ad + c2 *se2.matmul(ad,ad)) * -1
     return u_inv
 
 def fromSE2_dot_plot_draw(u, **kwargs):
