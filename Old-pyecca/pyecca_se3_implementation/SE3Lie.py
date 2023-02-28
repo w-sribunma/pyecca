@@ -261,7 +261,7 @@ def se3_diff_correction_inv(v): #U_inv of se3 input vee operator
 def dot_plot_draw(u, **kwargs):
     F = ca.sparsify(u)
 
-    output_dir = '/home/wsribunm/Documents/GitHub/pyecca/pyecca_se3_implementation' #change directory if needed
+    output_dir = '/home/wsribunm/Documents/GitHub/pyecca/pyecca_se3_implementation/fig' #change directory if needed
     os.makedirs(output_dir, exist_ok=True)
     g = graph.dotgraph(F)
     g.set('dpi', 180)
