@@ -1,7 +1,7 @@
 import copy
 
 import numpy as np
-import simpy
+import sympy
 
 import pyecca.msgs as msgs
 
