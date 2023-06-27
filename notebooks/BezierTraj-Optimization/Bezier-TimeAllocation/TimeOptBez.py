@@ -119,7 +119,8 @@ def derive_bezier6():
     P_sol = (A_inv@b).T
     return {
         'bezier6_solve': P_sol,#.subs(wp_0,[1,2]).subs(wp_1,[1,2]) #ca.Function('bezier6_solve', [wp_0, wp_1, T], [P_sol], ['wp_0', 'wp_1', 'T'], ['P']),
-        'bezier6_traj': r #ca.Function('bezier6_traj', [t, T, P], [r], ['t', 'T', 'P'], ['r']),
+        'bezier6_traj': r, #ca.Function('bezier6_traj', [t, T, P], [r], ['t', 'T', 'P'], ['r']),
+        # 'control_points': constraints
     }
 
 def find_cost_function(bez_deg, wpVal0, wpVal1, n_legs = 1):

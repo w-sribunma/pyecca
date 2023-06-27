@@ -1,0 +1,4 @@
+For Bezier Time Allocation Trajectory planning, explore adding control points and generate an interval hull or polygon to contrains motion for reference trajectory
+Ideas:
+- get control points from "Constraint" section [Currently outputs error getting 'control_points' from casadi function]
+- Check Casadi function format
